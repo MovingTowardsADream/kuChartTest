@@ -92,6 +92,17 @@ void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
     // Расчет шага между значениями по оси x
     double stepX = (endX - startX) / (m_data.size() - 1);
 
+
+    double minY = m_data.at(0), maxY = m_data.at(0);
+    for(int i = 0;i < m_data.size();i++){
+        if (minY > m_data.at(i)){
+            minY = m_data.at(i);
+        } else if (maxY < m_data.at(i)){
+            maxY = m_data.at(i);
+        }
+    }
+    double DistanceY = maxY - minY;
+
     // Начальное значение по оси x
     double currentX = startX;
 
@@ -102,9 +113,9 @@ void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
 
         // Координаты двух точек
         double x1 = currentX;
-        double y1 = startY - (value1 - m_start) / m_res * (endY - startY);
+        double y1 = (endY - startY) - (endY - startY)/DistanceY * value1;
         double x2 = currentX + stepX;
-        double y2 = startY - (value2 - m_start) / m_res * (endY - startY);
+        double y2 = (endY - startY) - (endY - startY)/DistanceY * value2;
 
         // Рисуем линию между точками
         p->drawLine(QLineF(x1, y1, x2, y2));
