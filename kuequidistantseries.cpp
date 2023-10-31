@@ -1,6 +1,8 @@
 #include "kuequidistantseries.h"
 #include <QObject>
 #include <QWidget>
+#include <QPainter>
+#include <QRectF>
 
 const KuSeriesType KuEquidistantSeries::type = kuEquidistant;
 
@@ -52,20 +54,18 @@ void KuEquidistantSeries::insert(int index, float value){
     if (visible()) emit sigRepaint();
 }
 
-void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
+// Start
+float KuEquidistantSeries::start() const
 {
-    if (!visible()) return;
-    //w->paintEngine();
+    return m_start;
 }
 
-///
-/// \name KuEquidistantSeries::_scalyze
-/// \brief process input data and generate "scaled" version of data acording to current graphics view
-void KuEquidistantSeries::_scalyze()
+void KuEquidistantSeries::setStart(float start)
 {
-
+    m_start = start;
 }
 
+// Resolution
 float KuEquidistantSeries::resolution() const
 {
     return m_res;
@@ -76,12 +76,48 @@ void KuEquidistantSeries::setResolution(float res)
     m_res = res;
 }
 
-float KuEquidistantSeries::start() const
+// Paint
+void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
 {
-    return m_start;
+    if (!visible()) return;
+    // w->paintEngine();
+
+    p->setPen(m_pen);
+
+    double startX = rangeRect.left(); // x-координата начала диапазона
+    double endX = rangeRect.right(); // x-координата конца диапазона
+    double startY = rangeRect.top(); // y-координата верхней границы диапазона
+    double endY = rangeRect.bottom(); // y-координата нижней границы диапазона
+
+    // Расчет шага между значениями по оси x
+    double stepX = (endX - startX) / (m_data.size() - 1);
+
+    // Начальное значение по оси x
+    double currentX = startX;
+
+    for (int i = 0; i < m_data.size() - 1; i++)
+    {
+        double value1 = m_data.at(i);
+        double value2 = m_data.at(i + 1);
+
+        // Координаты двух точек
+        double x1 = currentX;
+        double y1 = startY - (value1 - m_start) / m_res * (endY - startY);
+        double x2 = currentX + stepX;
+        double y2 = startY - (value2 - m_start) / m_res * (endY - startY);
+
+        // Рисуем линию между точками
+        p->drawLine(QLineF(x1, y1, x2, y2));
+
+        // Увеличение текущей x-координаты
+        currentX += stepX;
+    }
 }
 
-void KuEquidistantSeries::setStart(float start)
+///
+/// \name KuEquidistantSeries::_scalyze
+/// \brief process input data and generate "scaled" version of data acording to current graphics view
+void KuEquidistantSeries::_scalyze()
 {
-    m_start = start;
+
 }

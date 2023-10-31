@@ -25,7 +25,7 @@ public:
 
     virtual void paint(QPainter *w, QRectF rangeRect) = 0;
 
-private:
+protected:
     bool m_visible = false;
 
     QPen m_pen;
