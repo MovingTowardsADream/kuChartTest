@@ -15,6 +15,13 @@ public:
     MainWnd(QWidget *parent = nullptr);
     ~MainWnd();
 
+private slots:
+    void on_bAdd_clicked();
+
+    void on_bDel_clicked();
+
+    void on_cmSeries_activated(int index);
+
 private:
     Ui::MainWnd *ui;
 };
