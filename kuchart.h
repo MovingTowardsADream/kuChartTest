@@ -29,6 +29,7 @@ public:
 public slots:
     void renderLater();
     void renderNow();
+    void drawSeries(QPainter *painter);
 protected:
 //    bool event(QEvent *event) override;
 

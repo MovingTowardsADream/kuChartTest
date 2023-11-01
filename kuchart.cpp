@@ -7,12 +7,6 @@ KuChart::KuChart(QWidget *parent)
 
 }
 
-// Show
-void KuChart::renderLater()
-{
-    update();
-}
-
 // Grid enabled
 bool KuChart::gridEnabled() const
 {
@@ -81,6 +75,8 @@ void KuChart::renderNow()
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), m_bgColor);//QGradient::NightFade);
     render(&painter);
+
+    drawSeries(&painter);
     //painter.end();
 
     //m_backingStore->endPaint();
@@ -113,6 +109,18 @@ void KuChart::render(QPainter *painter)
     }
 }
 
+void KuChart::drawSeries(QPainter *painter){
+    for(int i = 0;i < m_seriesList.size();i++){
+        m_seriesList[i]->paint(painter, QRectF (m_gridXMargin, m_gridYMargin, width()-m_gridXMargin, height() - m_gridYMargin));
+    }
+}
+
+void KuChart::renderLater()
+{
+    update();
+}
+
+// Вызывается при каждом событии окна
 //bool KuChart::event(QEvent *event)
 //{
 //    if (event->type() == QEvent::UpdateRequest) {
