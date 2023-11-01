@@ -7,21 +7,13 @@ KuChart::KuChart(QWidget *parent)
 
 }
 
-//bool KuChart::event(QEvent *event)
-//{
-//    if (event->type() == QEvent::UpdateRequest) {
-//        renderNow();
-//        return true;
-//    }
-//    return QWidget::event(event);
-//}
-
+// Show
 void KuChart::renderLater()
 {
     update();
 }
 
-
+// Grid enabled
 bool KuChart::gridEnabled() const
 {
     return m_gridEnabled;
@@ -30,6 +22,53 @@ bool KuChart::gridEnabled() const
 void KuChart::setGridEnabled(bool gridEnabled)
 {
     m_gridEnabled = gridEnabled;
+}
+
+// Grid x count
+int KuChart::gridXCount() const
+{
+    return m_gridXCount;
+}
+
+void KuChart::setGridXCount(int gridXCount)
+{
+    m_gridXCount = gridXCount;
+    update();
+}
+
+// Grid y count
+int KuChart::gridYCount() const
+{
+    return m_gridYCount;
+}
+
+void KuChart::setGridYCount(int gridYCount)
+{
+    m_gridYCount = gridYCount;
+    update();
+}
+
+// Grid color
+void KuChart::setGridColor(const QColor &gridColor)
+{
+    m_gridColor = gridColor;
+    update();
+}
+
+// Back color
+void KuChart::setBgColor(const QColor &bgColor)
+{
+    m_bgColor = bgColor;
+    update();
+}
+
+// Paint Event
+void KuChart::paintEvent(QPaintEvent *event)
+{
+    //if (event->type() == QEvent::UpdateRequest) {
+    renderNow();
+    //} else
+    QWidget::paintEvent(event);
 }
 
 void KuChart::renderNow()
@@ -46,48 +85,6 @@ void KuChart::renderNow()
 
     //m_backingStore->endPaint();
     //m_backingStore->flush(rect);
-}
-
-void KuChart::paintEvent(QPaintEvent *event)
-{
-    //if (event->type() == QEvent::UpdateRequest) {
-        renderNow();
-    //} else
-    QWidget::paintEvent(event);
-}
-
-int KuChart::gridYCount() const
-{
-    return m_gridYCount;
-}
-
-void KuChart::setGridYCount(int gridYCount)
-{
-    m_gridYCount = gridYCount;
-    update();
-}
-
-int KuChart::gridXCount() const
-{
-    return m_gridXCount;
-}
-
-void KuChart::setGridXCount(int gridXCount)
-{
-    m_gridXCount = gridXCount;
-    update();
-}
-
-void KuChart::setGridColor(const QColor &gridColor)
-{
-    m_gridColor = gridColor;
-    update();
-}
-
-void KuChart::setBgColor(const QColor &bgColor)
-{
-    m_bgColor = bgColor;
-    update();
 }
 
 void KuChart::render(QPainter *painter)
@@ -115,3 +112,12 @@ void KuChart::render(QPainter *painter)
         // TODO: digits on grid lines
     }
 }
+
+//bool KuChart::event(QEvent *event)
+//{
+//    if (event->type() == QEvent::UpdateRequest) {
+//        renderNow();
+//        return true;
+//    }
+//    return QWidget::event(event);
+//}

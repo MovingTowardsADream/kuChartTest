@@ -1,6 +1,7 @@
 #ifndef MAINWND_H
 #define MAINWND_H
 
+#include "kuchart.h"
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -24,5 +25,6 @@ private slots:
 
 private:
     Ui::MainWnd *ui;
+    KuChart* kuchart;
 };
 #endif // MAINWND_H
