@@ -43,7 +43,7 @@ private:
     QVector<float> scaled_data;
     QVector<float> m_data;
     float m_start=0;
-    float m_res=0;
+    float m_res=1;
     const static KuSeriesType type;
     KuChart *parentChart=nullptr;
 };

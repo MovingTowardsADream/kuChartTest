@@ -1,4 +1,6 @@
 #include "kuchart.h"
+#include "kuequidistantseries.h"
+#include <ostream>
 
 KuChart::KuChart(QWidget *parent)
     : QWidget(parent)
@@ -74,11 +76,12 @@ void KuChart::renderNow()
     //QPaintDevice *device = m_backingStore->paintDevice();
     QPainter painter(this);
     painter.fillRect(0, 0, width(), height(), m_bgColor);//QGradient::NightFade);
+
+    // Grid
     render(&painter);
 
-    drawSeries(&painter);
-    //painter.end();
 
+    //painter.end();
     //m_backingStore->endPaint();
     //m_backingStore->flush(rect);
 }
@@ -90,7 +93,10 @@ void KuChart::render(QPainter *painter)
     if (m_gridEnabled && !gridRect.isEmpty() ) { // draw grid
         painter->setPen(m_gridColor);
         painter->drawRect(gridRect);
-        // TODO: draw line series if any
+
+        // Draw line series
+        drawSeries(painter);
+
         foreach(KuAbstractSeries* s, m_seriesList) {
             s->paint(painter, gridRect);
         }
@@ -105,7 +111,6 @@ void KuChart::render(QPainter *painter)
         for (int i=1; i<m_gridYCount; i++) {
             painter->drawLine(m_gridXMargin, gsy*i+m_gridYMargin, width()-m_gridYMargin, gsy*i+m_gridYMargin);
         }
-        // TODO: digits on grid lines
     }
 }
 
