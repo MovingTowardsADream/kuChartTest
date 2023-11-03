@@ -84,6 +84,8 @@ void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
     if (!visible()) return;
     // w->paintEngine();
 
+    _scalyze(rangeRect);
+
     p->setPen(pen());
 
     double startX = rangeRect.left(); // x-координата начала диапазона
@@ -129,27 +131,27 @@ void KuEquidistantSeries::paint(QPainter *p, QRectF rangeRect)
 ///
 /// \name KuEquidistantSeries::_scalyze
 /// \brief process input data and generate "scaled" version of data acording to current graphics view
-void KuEquidistantSeries::_scalyze()
+void KuEquidistantSeries::_scalyze(QRectF rangeRect)
 {
-    // Incomprehensible function
-//    float width = width();
-//    if (width > m_data.size()){
-//        scaled_data = m_data;
-//        return;
-//    }
-//    int amount = std::ceil(m_data.size() / width);
-//    m_res = 1 / amount;
-//    float maxValue = m_data[0];
-//    scaled_data.clear();
-//    for(size_t i = 0;i < m_data.size();i++){
-//        if (maxValue < m_data[i]){
-//            maxValue = m_data[i];
-//        }
-//        if ((i + 1) % amount == 0){
-//            scaled_data.append(maxValue);
-//            if (i + 1 != m_data.size()){
-//                maxValue = m_data[i+1];
-//            }
-//        }
-//    }
+    float width = rangeRect.right() - rangeRect.left();
+    float high = rangeRect.top() - rangeRect.bottom();
+    if (width > m_data.size()){
+        scaled_data = m_data;
+        return;
+    }
+    int amount = std::ceil(m_data.size() / width);
+    m_res = 1 / amount;
+    float maxValue = m_data[0];
+    scaled_data.clear();
+    for(size_t i = 0;i < m_data.size();i++){
+        if (maxValue < m_data[i]){
+            maxValue = m_data[i];
+        }
+        if ((i + 1) % amount == 0){
+            scaled_data.append(maxValue);
+            if (i + 1 != m_data.size()){
+                maxValue = m_data[i+1];
+            }
+        }
+    }
 }

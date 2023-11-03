@@ -39,7 +39,7 @@ protected:
     virtual void paint(QPainter *p, QRectF rangeRect);
 
 private:
-    void _scalyze();
+    void _scalyze(QRectF rangeRect);
     QVector<float> scaled_data;
     QVector<float> m_data;
     float m_start=0;
